@@ -1,4 +1,5 @@
 ﻿using CoreBusiness;
+using UseCases.CategoriesUseCases;
 using UseCases.DataStorePluginInterfaces;
 
 namespace Plugins.DataStore.InMemory;
