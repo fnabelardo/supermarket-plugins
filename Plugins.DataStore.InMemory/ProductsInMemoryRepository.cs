@@ -15,7 +15,7 @@ public class ProductsInMemoryRepository : IProductRepository
     private static List<Product> _products = new List<Product>()
     {
         new Product { ProductId = 1, CategoryId = 1, Name = "Iced Tea InMem", Quantity = 100, Price = 1.99 },
-        new Product { ProductId = 2, CategoryId = 1, Name = "Canadaa Dry InMem", Quantity = 200, Price = 1.99 },
+        new Product { ProductId = 2, CategoryId = 1, Name = "Canada Dry InMem", Quantity = 200, Price = 1.99 },
         new Product { ProductId = 3, CategoryId = 2, Name = "Whole Wheat Bread InMem", Quantity = 300, Price = 1.50 },
         new Product { ProductId = 4, CategoryId = 2, Name = "White Bread InMem", Quantity = 300, Price = 1.50 }
     };
@@ -35,7 +35,26 @@ public class ProductsInMemoryRepository : IProductRepository
         _products.Add(product);
     }
 
-    public IEnumerable<Product> GetProducts() => _products;
+    public IEnumerable<Product> GetProducts(bool loadCategory = false)
+    {
+        if (!loadCategory)
+        {
+            return _products;
+        }
+
+        if (_products.Any())
+        {
+            _products.ForEach(x =>
+            {
+                if (x.CategoryId.HasValue)
+                {
+                    x.Category = _categoryRepository.GetCategoryById(x.CategoryId.Value);
+                }
+            });
+        }
+
+        return _products ?? new List<Product>();
+    }
 
     public Product? GetProductById(int productId, bool loadCategory = false)
     {
@@ -82,7 +101,7 @@ public class ProductsInMemoryRepository : IProductRepository
         }
     }
 
-    public List<Product> GetProductsByCategoryId(int categoryId)
+    public IEnumerable<Product> GetProductsByCategoryId(int categoryId)
     {
         var product = _products.Where(x => x.CategoryId == categoryId);
         if (product != null)
