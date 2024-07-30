@@ -5,9 +5,9 @@ namespace MVCCourse.Models;
 
 public class TransactionsInMemoryRepository : ITransactionRepository
 {
-    private List<CoreBusiness.Transaction> _transactions = new List<CoreBusiness.Transaction>();
+    private List<Transaction> _transactions = new List<CoreBusiness.Transaction>();
 
-    public IEnumerable<CoreBusiness.Transaction> GetByDayAndCashier(DateTime date, string cashierName)
+    public IEnumerable<Transaction> GetByDayAndCashier(DateTime date, string cashierName)
     {
         if (string.IsNullOrWhiteSpace(cashierName))
         {
